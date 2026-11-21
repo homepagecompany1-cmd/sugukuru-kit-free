@@ -21,5 +21,5 @@ while IFS= read -r f; do
   curl -fsSL "$BASE/$f" -o "$f"
   new=$((new+1))
 done < <(printf '%s' "$IDX" | grep -o '"path": *"[^"]*"' | sed 's/"path": *"\(.*\)"/\1/')
-echo "取り込み: 新規 $new・既存のまま $kept"
+echo "取り込み: 新規 ${new} 件・既存のまま ${kept} 件"
 echo "次: git add -A && git commit -m 'すぐ来るキットを取り込み' && git push（Codex は画面で commit/PR）"
