@@ -1,0 +1,164 @@
+{
+  "kit": "sugukuru-kit-free",
+  "version": "2026-11-21",
+  "entry": "AGENTS.md",
+  "start": "AGENTS.md を読み、state/PROGRESS.md の残りを表で出してから1つずつ進める",
+  "files": [
+    {
+      "path": ".agents/skills/sugukuru-kit/SKILL.md",
+      "bytes": 4836
+    },
+    {
+      "path": ".claude/skills/sugukuru-kit/SKILL.md",
+      "bytes": 4836
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 63
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 9251
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 11
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 19347
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1703
+    },
+    {
+      "path": "README.md",
+      "bytes": 1420
+    },
+    {
+      "path": "images/claude/01_code_tab.png",
+      "bytes": 152393
+    },
+    {
+      "path": "images/claude/02_new_session.png",
+      "bytes": 266814
+    },
+    {
+      "path": "images/claude/03_env_list.png",
+      "bytes": 147306
+    },
+    {
+      "path": "images/claude/04_env_edit.png",
+      "bytes": 248839
+    },
+    {
+      "path": "images/claude/05_network_domains.png",
+      "bytes": 262337
+    },
+    {
+      "path": "images/claude/06_repo_list.png",
+      "bytes": 195206
+    },
+    {
+      "path": "images/claude/07_repo_selected.png",
+      "bytes": 163419
+    },
+    {
+      "path": "images/claude/08_first_message.png",
+      "bytes": 213345
+    },
+    {
+      "path": "references/00_junbi.md",
+      "bytes": 3419
+    },
+    {
+      "path": "references/10_github.md",
+      "bytes": 3619
+    },
+    {
+      "path": "references/20_cloudflare.md",
+      "bytes": 5167
+    },
+    {
+      "path": "references/25_hayamichi.md",
+      "bytes": 7388
+    },
+    {
+      "path": "references/30_stripe.md",
+      "bytes": 4329
+    },
+    {
+      "path": "references/40_hanbai_joken.md",
+      "bytes": 3563
+    },
+    {
+      "path": "references/50_teikyo.md",
+      "bytes": 3980
+    },
+    {
+      "path": "references/60_saikai.md",
+      "bytes": 2413
+    },
+    {
+      "path": "references/70_error.md",
+      "bytes": 3273
+    },
+    {
+      "path": "references/80_app_erabu.md",
+      "bytes": 3189
+    },
+    {
+      "path": "references/90_smaho_claude.md",
+      "bytes": 3890
+    },
+    {
+      "path": "references/91_smaho_codex.md",
+      "bytes": 2835
+    },
+    {
+      "path": "references/92_kaiwa_script.md",
+      "bytes": 5809
+    },
+    {
+      "path": "references/95_pc_route.md",
+      "bytes": 4588
+    },
+    {
+      "path": "state/PROGRESS.md",
+      "bytes": 2809
+    },
+    {
+      "path": "templates/app/.gitignore",
+      "bytes": 59
+    },
+    {
+      "path": "templates/app/README.md",
+      "bytes": 1280
+    },
+    {
+      "path": "templates/app/migrations/0001_init.sql",
+      "bytes": 1117
+    },
+    {
+      "path": "templates/app/package.json",
+      "bytes": 265
+    },
+    {
+      "path": "templates/app/src/index.js",
+      "bytes": 13701
+    },
+    {
+      "path": "templates/app/src/pages.js",
+      "bytes": 6562
+    },
+    {
+      "path": "templates/app/wrangler.toml",
+      "bytes": 649
+    },
+    {
+      "path": "tools/fetch_kit.sh",
+      "bytes": 1411
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+node_modules/
+.wrangler/
+.env
+.env.*
+*.pem
+.dev.vars
+.DS_Store

@@ -1,0 +1,16 @@
+# Cloudflare Workers の設定。
+# 「name」は Cloudflare の画面で付けた Worker 名と完全に同じにする（違うとビルドが失敗する）。
+name = "my-app"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+
+# D1 データベース。database_id は Cloudflare の D1 画面の「Database ID」に置き換える（鍵ではない）。
+[[d1_databases]]
+binding = "DB"
+database_name = "app-db"
+database_id = "REPLACE_WITH_D1_ID"
+
+# 秘密（ADMIN_KEY・STRIPE_WEBHOOK_SECRET）はここに書かない。
+# Cloudflare の Worker → Settings → Variables and Secrets に本人が入れる。
+[vars]
+SITE_NAME = "My App"
