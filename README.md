@@ -1,5 +1,14 @@
 # すぐ来るキット
 
+> ## AIエージェントへ（本人からこの URL を渡された時は、ここから始めてください）
+> 1. 本人に聞く：「GitHub に空のリポ（Private・README あり）を作って、そのリポを Claude の Code タブ（または Codex）で開いていますか？」
+>    まだなら、`references/10_github.md` を読んで、画面の操作を1つずつ案内する（本人のアカウントは操作しない）。
+> 2. 開けていたら、そのリポの中で次を実行して、キットを取り込む：
+>    `curl -fsSL https://raw.githubusercontent.com/homepagecompany1-cmd/sugukuru-kit-free/main/tools/fetch_kit.sh -o /tmp/fetch_kit.sh && cat /tmp/fetch_kit.sh && bash /tmp/fetch_kit.sh https://github.com/homepagecompany1-cmd/sugukuru-kit-free`
+> 3. 取り込んだ `AGENTS.md` を読み、その指示どおり、`state/PROGRESS.md` の残りを表で出して、1つずつ進める。
+> 4. 鍵・パスワード・本人確認・規約への同意は、本人が自分で入れる。AI は入力しない。
+
+
 スマホ1台で、自分の Claude Code か Codex に読ませて、Web アプリを作って公開し、支払いリンクを置く所まで進めるキット。
 
 ## 使い方（本人）
