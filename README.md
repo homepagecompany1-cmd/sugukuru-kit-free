@@ -16,7 +16,7 @@
 
 ## 使い方（本人）
 0. PC があるなら `references/95_pc_route.md`（速い）。無ければ次へ。PC が無くても速い道 `references/25_hayamichi.md`（本人は鍵を貼るだけ・検証中）。
-1. このページ右上の **Use this template → Create a new repository → Private** で、自分のリポを作る（キットが最初から全部入る）。
+1. **ここを押す → https://github.com/homepagecompany1-cmd/sugukuru-kit-free/generate**（「Use this template」の画面が直接開く）。名前を入れて **Private** → Create（キットが最初から全部入る）。
 2. Claude アプリの **Code** タブ（または Codex のクラウド）でそのリポを開く。
 3. 最初の一言：**「AGENTS.md を読んで、始めて」**
 4. あとは AI が「残りのタスク」を表で出し、1つずつ案内します。鍵・本人確認・規約同意は自分で入れます。
