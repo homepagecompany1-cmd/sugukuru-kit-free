@@ -21,13 +21,15 @@
 - 終わると：`https://github.com/<ユーザー名>/<リポ名>` が開く。
 
 ## 3. AI との接続
-### A：Claude Code
-1. Claude アプリ → **Code** タブ → 初回は「GitHub を接続」→ **Claude GitHub App** を許可し、さっき作ったリポを選ぶ。
+### A：Claude Code（スマホだけの人は、こちらがおすすめ）
+0. 初回だけ：ブラウザで `https://claude.ai/code` を開く → 「GitHub を接続」が出る → GitHub の画面で **承認** → 戻る → **Claude GitHub App** のインストール案内 → **自分のアカウント**を選び、さっき作ったリポ（Private）を許可（Private リポはこの App が無いと開けない。公式：code.claude.com/docs/en/web-quickstart・確認日 2026-11-22）。
+   環境は Pro/Max なら「Default」が自動で用意される。設定は不要。
+1. Claude アプリ → **Code** タブ → 入力欄の下の「リポジトリを選ぶ」で、そのリポを選ぶ。
 2. そのリポで新しいセッションを始め、「キットを読んで始めて」と送る（キットの入れ方は 4 へ）。
 - 終わると：セッションの中で `git remote -v` に github.com が出て、`git push` が通る。
 
-### B：Codex
-1. Codex（ChatGPT）のクラウドで **環境** を作る → GitHub を接続 → リポを選ぶ。
+### B：Codex（注意：**環境の作成と公開は PC かブラウザ版の ChatGPT で1回**行う必要がある。スマホアプリからはタスクの開始・続きだけ。公式：help.openai.com「Using Codex with your ChatGPT plan」・確認日 2026-11-22）
+1. ブラウザで chatgpt.com → **Codex** → **Create environment** → 「Connect GitHub」が出たら承認 → リポを選ぶ → **Publish**。
 2. 環境の **Network** で外部への通信を許可する（少なくとも `*.workers.dev` と `raw.githubusercontent.com`）。
 3. その環境でタスクを始め、「キットを読んで始めて」と送る。
 
