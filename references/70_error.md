@@ -8,7 +8,7 @@
 | ビルド失敗 `Missing entry-point` | `main` のパスが違う／Root directory の設定 | Root directory を確認 | `wrangler.toml` の `main` を確認 |
 | `/api/health` が `{"db":"error"}` | database_id が仮のまま・スキーマ未投入 | D1 の Console で SQL を実行 | `wrangler.toml` の ID を確認 |
 | `/api/health` が `ok:false` で `未置換` | pages.js か STRIPE_LINK に `{{...}}` が残っている | 足りない情報を答える | 置き換えて push |
-| ビルド失敗 7404 `Database not found` | D1 の ID が仮のまま先にビルドした | D1 を作って ID を伝える（タスク4） | ID を入れて push |
+| ビルド失敗 7404 `Database not found` | D1 の ID が仮のまま先にビルドした | D1 を作って ID を伝える（タスク3） | ID を入れて push |
 | push したのにビルドが走らない | `main` 以外に push した／PR が merge されていない | B：PR を merge | A：`git branch --show-current` → main に merge して push |
 | `D1_ERROR: no such table` | スキーマ未投入 | D1 Console に `migrations/0001_init.sql` を貼って実行 | SQL を渡す |
 | Stripe「本番環境が有効ではありません」 | 本人確認・事業情報が未完了か審査中 | ダッシュボードの未完了項目を埋める | 状態を `審査待ち` に |

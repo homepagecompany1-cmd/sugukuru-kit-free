@@ -1,17 +1,17 @@
-# 20 Cloudflare（タスク4・5）
+# 20 Cloudflare（タスク3）
 
 目的：無料で公開する場所。**GitHub に push すると Cloudflare が自動でビルドして公開**する（Workers Builds）。
 この方式なら **API トークンを AI に渡さなくてよい**。
 早い道（本人は鍵を貼るだけ・AI が API で組む）は `25_hayamichi.md`。「検証中」の間はこの 20 を使う。
 
-**順番が大事：D1（タスク4）を先に作ってから、連携ビルド（タスク5）。** 仮の `database_id` のままビルドすると失敗する（Cloudflare のエラー 7404「Database not found」）。
+**順番が大事：D1（タスク3）を先に作ってから、連携ビルド（タスク3）。** 仮の `database_id` のままビルドすると失敗する（Cloudflare のエラー 7404「Database not found」）。
 
 ## 1. アカウント（本人）
 1. `https://dash.cloudflare.com/sign-up` → メール・パスワード → 届いたメールで確認。
 2. プランは **Free** のまま。クレジットカードは入れなくてよい（求められたら「後で」）。
 - 終わると：ダッシュボードが開く。
 
-## 2. D1 データベース（タスク4）
+## 2. D1 データベース（タスク3）
 申込・予約・注文を保存する場所。無料枠内。
 
 ### 本人がやる
@@ -24,9 +24,9 @@
 ### AI がやる
 1. `templates/app/wrangler.toml` の `database_id = "REPLACE_WITH_D1_ID"` を本物に置き換える（`database_name` は `app-db`）。
 2. commit → push。`state/PROGRESS.md` の記録に「D1 の名前：app-db」。
-- タスク4 完了の条件：wrangler.toml に本物の ID が入って push 済み・SQL 投入済み。
+- タスク3 完了の条件：wrangler.toml に本物の ID が入って push 済み・SQL 投入済み。
 
-## 3. GitHub 連携でアプリを作る（タスク5・本人の画面）
+## 3. GitHub 連携でアプリを作る（タスク3・本人の画面）
 Cloudflare 公式の手順（2026-11 確認）：
 1. 左メニュー **Workers & Pages** → **Create application**。
 2. **GitHub** を選ぶ → GitHub にログインして **Cloudflare Workers & Pages** のアプリを許可 → 対象のリポ（`my-shop` など）だけを選ぶ。

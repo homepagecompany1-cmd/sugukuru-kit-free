@@ -1,4 +1,4 @@
-# 10 GitHub（タスク3）
+# 10 GitHub（タスク2）
 
 目的：コードと進捗の置き場。AI が読み書きし、Cloudflare がここから自動で公開する。
 
@@ -37,6 +37,12 @@ git push origin main   # A のみ。B は本人が Codex の画面で PR → mer
 通信が拒否されたら：A は環境の **Allowed domains** にキットのドメインを足す（本人が claude.ai/code の環境編集で）。B は環境の Network に足す。
 
 本人が ZIP で持っている場合：スマホから GitHub の **Add file → Upload files** はフォルダ単位で難しいので、**配布 URL を使う方法を勧める**。
+
+## 4.5 慣れる練習（タスク2 の仕上げ・5分）
+1. AI が `templates/app/public/index.html` の見出しを1行だけ本人の名前や店名に変えて保存（commit→push／B は PR）
+2. 本人が GitHub アプリでそのファイルを開き、変わっているのを見る（B は PR を Merge してから）
+3. AI が「履歴（Commits）」の見方を1画面で案内 → 本人が「いつ・何を変えたか」が見えたらタスク2 完了
+※ これで「AI に頼む→保存される→自分のスマホで見える」の1往復が身につく。次のタスク3で、この同じ流れが公開 URL になる。
 
 ## 5. 決まり
 - 公開されるのは `main` だけ。A は `main` に commit → push（`git branch --show-current` で確認）。B は commit → 本人が PR を merge。本人は Git を知らなくてよい。

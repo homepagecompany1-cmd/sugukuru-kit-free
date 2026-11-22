@@ -1,4 +1,4 @@
-# 60 保存・翌日の再開・戻し方（タスク11）
+# 60 保存・翌日の再開・戻し方（タスク9）
 
 ## 保存の決まり
 - 進捗は `state/PROGRESS.md`、商品は `state/PRODUCT.md`、運用手順は `state/UNYO.md`。コードと記録は **GitHub の `main`** に入った物だけが残る（A は push、B は PR の merge）。

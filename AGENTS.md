@@ -32,18 +32,17 @@
 | # | タスク | 読む手順書 |
 |---|---|---|
 | 1 | 環境の確認（本人のプラン・**PC があるか**・クラウド実行・GitHub 接続・push） | references/00_junbi.md ／PC がある人は references/95_pc_route.md |
-| 2 | 何を誰にいくらで売るかを決める（最小機能・1商品） | references/80_app_erabu.md |
-| 3 | GitHub（リポにキットが入り、AI から保存できる） | references/10_github.md |
-| 4 | Cloudflare アカウント＋**D1 を先に作る**（ID を wrangler.toml へ・SQL 投入） | references/20_cloudflare.md（早い道は 25） |
-| 5 | Cloudflare の GitHub 連携ビルド→workers.dev の URL・/api/health | references/20_cloudflare.md（早い道は 25） |
-| 6 | 説明と販売条件のページを先に公開（特商法・返金・問い合わせ） | references/40_hanbai_joken.md |
-| 7 | Stripe（アカウント・本人確認・商品と価格・支払いリンク）※審査待ちの間に 8 を進める | references/30_stripe.md（早い道は 25） |
-| 8 | アプリを作る（templates/app の中で・本人の商品に合わせる） | references/80_app_erabu.md |
-| 9 | 購入後に何を渡すかを決めて作る（手動／自動） | references/50_teikyo.md |
-| 10 | 本番で通し確認（表示→申込→保存→決済→提供→取消） | references/50_teikyo.md |
-| 11 | 保存・翌日の再開・壊れた時の戻し方 | references/60_saikai.md |
+| 2 | **GitHub に慣れる**（テンプレートから自分のリポ→AI に1行直してもらう→保存→GitHub アプリで見る） | references/10_github.md |
+| 3 | Cloudflare（アカウント→**D1 を先に作る**→GitHub 連携ビルド）→ **自分のアプリが workers.dev の URL でスマホに出る** | references/20_cloudflare.md（早い道は 25） |
+| 4 | アプリを自分の物にする（何を誰にいくらで＝1商品を決める→templates/app を直す→push→URL で見る） | references/80_app_erabu.md |
+| — | ここまでが「Git で Web アプリを作る」の実体験。ここから先は**決済**（1つずつチェック） | |
+| 5 | 説明と販売条件のページを公開（特商法・返金・問い合わせ） | references/40_hanbai_joken.md |
+| 6 | Stripe（アカウント・本人確認・商品と価格・支払いリンク）※審査待ちの間に 7 を進める | references/30_stripe.md（早い道は 25） |
+| 7 | 購入後に何を渡すかを決めて作る（手動／自動） | references/50_teikyo.md |
+| 8 | 本番で通し確認（表示→申込→保存→決済→提供→取消） | references/50_teikyo.md |
+| 9 | 保存・翌日の再開・壊れた時の戻し方 | references/60_saikai.md |
 
-番号は `state/PROGRESS.md` と同じ（11行）。③待ちリスト型（支払いなし）は 7 と 9 を `対象外` にしてよい。
+番号は `state/PROGRESS.md` と同じ（9行）。③待ちリスト型（支払いなし）は 6 と 7 を `対象外` にしてよい。
 
 状態は7つ：`未着手` `AI作業中` `本人操作待ち` `審査待ち` `失敗` `完了` `対象外`。
 
