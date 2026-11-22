@@ -28,10 +28,17 @@
 2. そのリポで新しいセッションを始め、「キットを読んで始めて」と送る（キットの入れ方は 4 へ）。
 - 終わると：セッションの中で `git remote -v` に github.com が出て、`git push` が通る。
 
-### B：Codex（注意：**環境の作成と公開は PC かブラウザ版の ChatGPT で1回**行う必要がある。スマホアプリからはタスクの開始・続きだけ。公式：help.openai.com「Using Codex with your ChatGPT plan」・確認日 2026-11-22）
-1. ブラウザで chatgpt.com → **Codex** → **Create environment** → 「Connect GitHub」が出たら承認 → リポを選ぶ → **Publish**。
-2. 環境の **Network** で外部への通信を許可する（少なくとも `*.workers.dev` と `raw.githubusercontent.com`）。
-3. その環境でタスクを始め、「キットを読んで始めて」と送る。
+### B：Codex（スマホだけの人の道・公式確認 2026-11-22）
+公式には「環境の作成と公開は web かデスクトップ」「スマホは、ある環境を選んでタスクを始める」とある（learn.chatgpt.com/docs/environments/cloud-environments）。スマホだけなら、次の順で試す：
+1. **既定の環境（default environment）を使う**：ChatGPT アプリ → Codex → Cloud → 環境の選択で「既定の環境」が出れば、それを選ぶ。
+   公式：「スマホから始めたタスクでも、つないだ GitHub のリポを取り込める」（docs/cloud）。最初の一言は
+   「**<自分のユーザー名>/<リポ名> を取り込んで、その中の AGENTS.md を読んで、始めて**」。
+   ※ 前提：GitHub を Codex につないであること。つなぐ画面がアプリに出なければ 2 へ。
+2. **スマホのブラウザで chatgpt.com を開く** → Codex → **Create environment** → 「Connect GitHub」を承認 → リポを選ぶ → **Publish**。
+   公式の「web」にスマホのブラウザが含まれるかは明記なし（未確認）。画面が崩れる時はブラウザの「PC 版サイトを表示」を試す。
+3. それでも無理なら、**その人は Claude Code（Claude アプリの Code タブ）で始める**ほうが早い（A の手順・承認2回で済む）。
+- AI がやること：本人がどの道で入ったかを `state/PROGRESS.md` の記録に書く（「Codex 既定の環境」「Codex ブラウザ環境」「Claude」）。
+- 環境の **Network** は作業中は切られている事がある（旧版の公式に「既定でオフ」）。このキットは取り込み不要（テンプレート方式）なので、オフのままでよい。Cloudflare の確認（タスク3の /api/health）だけは、本人がスマホのブラウザで URL を開いて見る。
 
 ## 4. キットをリポに入れる（AI がやる）
 配布先は GitHub の公開リポ（`https://github.com/homepagecompany1-cmd/sugukuru-kit-free`）。この URL を本人から渡されたら、まず `index.json` を取り、中の一覧どおりに取り込む：
