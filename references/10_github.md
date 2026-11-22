@@ -9,6 +9,12 @@
 - 終わると：右上に自分のアイコンが出る。
 
 ## 2. リポジトリを作る（本人）
+### おすすめ：テンプレートから（キットが最初から入る・取り込み不要）
+1. `https://github.com/homepagecompany1-cmd/sugukuru-kit-free` を開く → **Use this template** → **Create a new repository**。
+2. 名前は英数字（例 `my-shop`）。**Private** を選ぶ → **Create repository**。
+- これで 4（取り込み）は飛ばしてよい。
+
+### テンプレートが使えない時：空のリポから
 1. 右上「＋」→ **New repository**。
 2. 名前は英数字（例 `my-shop`）。**Private** を選ぶ。「Add a README」にチェックを入れる。
 3. **Create repository**。
