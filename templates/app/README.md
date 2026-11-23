@@ -5,7 +5,7 @@
 | `wrangler.toml` | Worker 名・D1 の ID | AI（本人の画面の値で） |
 | `src/pages.js` | 全部の文面（トップ・フォーム・特商法・利用条件・プライバシー・thanks） | AI（本人の答えで） |
 | `src/index.js` | 画面の出し分け・保存・管理画面・Stripe の支払いリンク | AI |
-| `migrations/0001_init.sql` | D1 の表（本人が D1 Console に貼る） | — |
+| `migrations/0001_init.sql`・`0002_stripe_review.sql` | D1 の表（本人が D1 Console に順に貼る） | — |
 
 ## 画面
 - `/` トップ → `/apply` 申込フォーム → `/thanks`（支払いリンクのボタン）

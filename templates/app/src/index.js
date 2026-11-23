@@ -41,8 +41,9 @@ async function rateLimited(env, ip, limit = 10) {
   return false;
 }
 
+const linkSet = () => /^https:\/\/(buy\.stripe\.com|checkout\.stripe\.com)\/[A-Za-z0-9_\-\/]+$/.test(STRIPE_LINK);
 function payLink(entryId) {
-  if (!STRIPE_LINK || STRIPE_LINK.includes("{{")) return "";
+  if (!linkSet()) return "";
   const u = new URL(STRIPE_LINK);
   if (entryId) u.searchParams.set("client_reference_id", String(entryId)); // Stripe 公式：Payment Links は client_reference_id を受け取り Checkout Session に入る
   return u.toString();
@@ -72,7 +73,7 @@ export default {
         try { await env.DB.prepare("SELECT 1 FROM entries LIMIT 1").first(); }
         catch (e) { return json({ ok: false, db: "error", why: String(e.message || e).slice(0, 120) }, 500); }
         // ok＝動いている。sale_ready＝お金を受け取ってよい状態（初回公開の時点では false でよい）
-        const pay = !STRIPE_LINK.includes("{{");
+        const pay = linkSet();
         return json({ ok: true, db: "ok", sale_ready: !left && pay, left_placeholders: left, stripe_link: pay ? "set" : "not set" });
       }
       if (p === "/admin") return admin(req, env, url);
@@ -138,7 +139,12 @@ async function admin(req, env, url) {
   const action = (extra) => "/admin/status?" + new URLSearchParams({ key, ...extra }).toString();
   const tr = rows.map((r) => `<tr><td>${r.id}</td><td>${esc(r.created_at)}</td><td>${esc(r.name)}<br><small>${esc(r.email)} ${esc(r.phone)}</small></td><td>${esc(r.wish1)} ${esc(r.wish2)}<br><small>${esc(r.note)}</small></td><td>${esc(r.status)}${r.paid ? " 💳支払済" : ""}<form method="post" action="${esc(action({}))}"><input type="hidden" name="id" value="${r.id}"><button name="status" value="done">対応済</button> <button name="status" value="cancel">取消</button></form></td></tr>`).join("");
   const nav = `<p class="small"><a href="/admin?${new URLSearchParams({ key }).toString()}">未対応だけ</a> ｜ <a href="/admin?${new URLSearchParams({ key, all: "1" }).toString()}">全部</a></p><form method="get" action="/admin"><input type="hidden" name="key" value="${esc(key)}"><input name="q" value="${esc(q)}" placeholder="名前かメールで探す"></form>`;
-  return page("管理", `<h1>申込一覧（${rows.length}）</h1>${nav}<p class="small">「取消」は申込の状態だけを変えます。返金は Stripe の画面から。</p><table class="tbl"><tr><th>#</th><th>日時(UTC)</th><th>名前</th><th>内容</th><th>状態</th></tr>${tr}</table>`, 200, noStore);
+  let rv = "";
+  try {
+    const rr = (await env.DB.prepare("SELECT created_at,entry_id,email,amount,currency,reason FROM stripe_review ORDER BY id DESC LIMIT 50").all()).results || [];
+    if (rr.length) rv = `<h2>要確認の支払い（${rr.length}）</h2><p class="small">自動で支払済みにしなかった物。Stripe の画面で中身を確かめてから、手で対応してください。</p><table class="tbl"><tr><th>日時</th><th>申込#</th><th>メール</th><th>金額</th><th>理由</th></tr>${rr.map((r) => `<tr><td>${esc(r.created_at)}</td><td>${esc(r.entry_id ?? "")}</td><td>${esc(r.email)}</td><td>${esc(r.amount ?? "")} ${esc(r.currency)}</td><td>${esc(r.reason)}</td></tr>`).join("")}</table>`;
+  } catch (e) { rv = ""; }
+  return page("管理", `<h1>申込一覧（${rows.length}）</h1>${nav}${rv}<p class="small">「取消」は申込の状態だけを変えます。返金は Stripe の画面から。</p><table class="tbl"><tr><th>#</th><th>日時(UTC)</th><th>名前</th><th>内容</th><th>状態</th></tr>${tr}</table>`, 200, noStore);
 }
 async function adminStatus(req, env, url) {
   if (!adminOk(env, url, req)) return json({ ok: false }, 403);
@@ -172,15 +178,28 @@ async function stripeWebhook(req, env) {
     if (ev.type === "checkout.session.completed" || ev.type === "checkout.session.async_payment_succeeded") {
       const s = ev.data.object;
       if (s.payment_status === "paid") {
-        // 照合：申込番号＋メールが一致した時だけ「支払済み」。合わない物は自動で納品せず、管理画面で目で確かめる
-        // 任意で Secrets に EXPECTED_AMOUNT（例 3000）・EXPECTED_CURRENCY（例 jpy）を入れると金額も照合する
-        const okAmount = (!env.EXPECTED_AMOUNT || String(s.amount_total) === String(env.EXPECTED_AMOUNT)) && (!env.EXPECTED_CURRENCY || (s.currency || "").toLowerCase() === env.EXPECTED_CURRENCY.toLowerCase());
+        // 照合：申込番号＋メール＋金額＋通貨（＋設定していれば支払いリンク）が全部合った時だけ「支払済み」。
+        // EXPECTED_AMOUNT（例 3000）・EXPECTED_CURRENCY（例 jpy）を Secrets に入れていない時は、自動で支払済みにしない（全部「要確認」）。
         const ref = /^\d{1,12}$/.test(s.client_reference_id || "") ? Number(s.client_reference_id) : 0;
         const email = (s.customer_details?.email || s.customer_email || "").toLowerCase();
         const payId = s.payment_intent || s.id; // 返金（charge.refunded）と同じ ID で保存する
-        if (ref && email && okAmount) {
-          await env.DB.prepare("UPDATE entries SET paid=1, stripe_session=? WHERE id=? AND lower(email)=?").bind(payId, ref, email).run();
+        const why = [];
+        if (!ref) why.push("申込番号なし");
+        if (!email) why.push("メールなし");
+        if (!env.EXPECTED_AMOUNT || !env.EXPECTED_CURRENCY) why.push("金額・通貨の照合が未設定");
+        else {
+          if (String(s.amount_total) !== String(env.EXPECTED_AMOUNT)) why.push(`金額違い(${s.amount_total})`);
+          if ((s.currency || "").toLowerCase() !== env.EXPECTED_CURRENCY.toLowerCase()) why.push(`通貨違い(${s.currency})`);
         }
+        if (env.EXPECTED_PAYMENT_LINK && s.payment_link !== env.EXPECTED_PAYMENT_LINK) why.push("支払いリンク違い");
+        if (s.livemode === false && env.REQUIRE_LIVE === "1") why.push("テストの支払い");
+        let ok = false;
+        if (!why.length) {
+          const r = await env.DB.prepare("UPDATE entries SET paid=1, stripe_session=? WHERE id=? AND lower(email)=?").bind(payId, ref, email).run();
+          ok = (r.meta?.changes || 0) > 0; if (!ok) why.push("申込番号とメールの組が見つからない");
+        }
+        if (!ok) await env.DB.prepare("INSERT INTO stripe_review(session_id,entry_id,email,amount,currency,payment_link,reason) VALUES(?,?,?,?,?,?,?)")
+          .bind(s.id, ref || null, email, s.amount_total ?? null, s.currency || "", s.payment_link || "", why.join("・")).run();
         // 番号なし・メール不一致・金額違いは「要確認」として記録だけ（自動で支払済みにしない）
       }
     }

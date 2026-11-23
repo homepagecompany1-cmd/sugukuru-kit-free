@@ -18,7 +18,7 @@
 1. 左メニュー **Storage & Databases** → **D1 SQL Database** → **Create Database**。
 2. 名前は `app-db`。Location は自動でよい → **Create**。
 3. できた画面の **Database ID**（英数字とハイフン）を AI に伝える（秘密ではない。鍵ではない）。
-4. 同じ画面の **Console** を開き、AI が渡す SQL（`templates/app/migrations/0001_init.sql` の中身）を貼って **Execute**。
+4. 同じ画面の **Console** を開き、AI が渡す SQL（`templates/app/migrations/0001_init.sql` と `0002_stripe_review.sql` の中身）を順に貼って **Execute**。
 - 終わると：Console に「Tables」として entries / stripe_events / rate が見える。
 
 ### AI がやる
