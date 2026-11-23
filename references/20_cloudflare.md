@@ -44,7 +44,8 @@ Cloudflare 公式の手順（2026-11 確認）：
 curl -s -o /dev/null -w "%{http_code}\n" https://<Worker名>.<アカウント>.workers.dev/
 curl -s https://<Worker名>.<アカウント>.workers.dev/api/health
 ```
-トップが 200・`/api/health` が `{"ok":true,"db":"ok"}` なら完了。`"ok":false` の時は `why` に理由が出る（未置換の `{{...}}` が残っている時も `ok:false`）。
+トップが 200・`/api/health` が `"ok":true,"db":"ok"` なら初回公開は完了（この時点では `"sale_ready":false` で正常。商品・販売条件・Stripe リンクを入れると true になる）。`"ok":false` の時は `why` に理由が出る。
+**お金を受け取る前の門**：`"sale_ready":true`（未置換の `{{...}}` が0・Stripe リンクあり）になってから、申込ページを人に知らせる。
 通信が拒否されたら、環境の **Allowed domains** に `*.workers.dev` を足してもらう（本人の操作）。
 `state/PROGRESS.md` の記録に公開 URL と Worker 名を書く。
 

@@ -20,7 +20,7 @@
 
 ## ③に進む時（AI）
 - `src/index.js` の `/api/stripe/webhook` を有効にし、`STRIPE_WEBHOOK_SECRET` を **Cloudflare の Worker → Settings → Variables and Secrets** に本人が入れる。
-- ひな形に実装済み：署名検証（複数 v1・定数時間比較）・二重処理防止・`checkout.session.completed`（`payment_status=paid`）で `client_reference_id`＝申込番号の行を支払済に・`charge.refunded` は手動確認。
+- ひな形に実装済み：署名検証（複数 v1・定数時間比較）・二重処理防止・`checkout.session.completed`（`payment_status=paid`）で「申込番号（client_reference_id）とメールが両方一致」した時だけ支払済に（番号なし・メール違い・金額違いは自動で支払済にしない＝管理画面で確認）。金額も照合したい時は Secrets に `EXPECTED_AMOUNT`・`EXPECTED_CURRENCY`。返金は `charge.refunded` で取り消し表示。
 - 本人が Stripe の **開発者 → Webhook** でエンドポイント `https://<公開URL>/api/stripe/webhook` を登録する。
 
 ## 本番の通し確認（タスク8・本人のスマホで）

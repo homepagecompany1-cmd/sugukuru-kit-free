@@ -17,7 +17,8 @@ const json = (o, status = 200) => new Response(JSON.stringify(o), { status, head
 
 // 未置換の {{...}} が残っていないか（公開前の門。/api/health が ok:false になる）
 function unreplaced() {
-  const vals = [STRIPE_LINK, ...Object.values(SITE), HOME, THANKS, TOKUSHOHO, TERMS, PRIVACY];
+  // THANKS の {{STRIPE_LINK}} は表示の時に差し込む印なので数えない
+  const vals = [...Object.values(SITE), HOME, THANKS.replaceAll("{{STRIPE_LINK}}", ""), TOKUSHOHO, TERMS, PRIVACY];
   const hits = vals.filter((v) => typeof v === "string" && v.includes("{{"));
   return hits.length;
 }
@@ -70,8 +71,9 @@ export default {
         const left = unreplaced();
         try { await env.DB.prepare("SELECT 1 FROM entries LIMIT 1").first(); }
         catch (e) { return json({ ok: false, db: "error", why: String(e.message || e).slice(0, 120) }, 500); }
-        if (left) return json({ ok: false, db: "ok", why: `未置換の {{...}} が ${left} 箇所あります（pages.js / STRIPE_LINK）` }, 500);
-        return json({ ok: true, db: "ok" });
+        // ok＝動いている。sale_ready＝お金を受け取ってよい状態（初回公開の時点では false でよい）
+        const pay = !STRIPE_LINK.includes("{{");
+        return json({ ok: true, db: "ok", sale_ready: !left && pay, left_placeholders: left, stripe_link: pay ? "set" : "not set" });
       }
       if (p === "/admin") return admin(req, env, url);
     }
@@ -170,17 +172,21 @@ async function stripeWebhook(req, env) {
     if (ev.type === "checkout.session.completed" || ev.type === "checkout.session.async_payment_succeeded") {
       const s = ev.data.object;
       if (s.payment_status === "paid") {
+        // 照合：申込番号＋メールが一致した時だけ「支払済み」。合わない物は自動で納品せず、管理画面で目で確かめる
+        // 任意で Secrets に EXPECTED_AMOUNT（例 3000）・EXPECTED_CURRENCY（例 jpy）を入れると金額も照合する
+        const okAmount = (!env.EXPECTED_AMOUNT || String(s.amount_total) === String(env.EXPECTED_AMOUNT)) && (!env.EXPECTED_CURRENCY || (s.currency || "").toLowerCase() === env.EXPECTED_CURRENCY.toLowerCase());
         const ref = /^\d{1,12}$/.test(s.client_reference_id || "") ? Number(s.client_reference_id) : 0;
-        if (ref) await env.DB.prepare("UPDATE entries SET paid=1, stripe_session=? WHERE id=?").bind(s.id, ref).run();
-        else {
-          const email = s.customer_details?.email || s.customer_email || "";
-          if (email) await env.DB.prepare("UPDATE entries SET paid=1, stripe_session=? WHERE id=(SELECT id FROM entries WHERE email=? AND paid=0 ORDER BY id DESC LIMIT 1)").bind(s.id, email).run();
+        const email = (s.customer_details?.email || s.customer_email || "").toLowerCase();
+        const payId = s.payment_intent || s.id; // 返金（charge.refunded）と同じ ID で保存する
+        if (ref && email && okAmount) {
+          await env.DB.prepare("UPDATE entries SET paid=1, stripe_session=? WHERE id=? AND lower(email)=?").bind(payId, ref, email).run();
         }
+        // 番号なし・メール不一致・金額違いは「要確認」として記録だけ（自動で支払済みにしない）
       }
     }
     if (ev.type === "charge.refunded") {
       const pi = ev.data.object.payment_intent || "";
-      if (pi) await env.DB.prepare("UPDATE entries SET status='cancel' WHERE stripe_session IN (SELECT stripe_session FROM entries WHERE stripe_session=?)").bind(pi).run(); // 一致しない時は何もしない（手動で確認）
+      if (pi) await env.DB.prepare("UPDATE entries SET status='cancel' WHERE stripe_session=?").bind(pi).run(); // 一致しない時は何もしない（手動で確認）
     }
     // 処理が通ってから記録する（途中で失敗したら 500 を返し、Stripe に再送してもらう）
     await env.DB.prepare("INSERT INTO stripe_events(id) VALUES(?)").bind(ev.id).run();

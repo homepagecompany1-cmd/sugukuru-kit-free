@@ -1,5 +1,7 @@
 # すぐ来るキット — スマホ1台で Web アプリを作って公開するまでの案内（入口）
 
+> **English speakers:** if the user writes in English, reply in English, translate these Japanese instructions as you go, and write user-facing files (scripts, posts, pages, reports) in English. Use US conventions (dates, $, time zone the user gives) instead of Japan-specific ones where they differ, and say so.
+
 このファイルを読んだ AI（Claude Code または Codex）は、下の順で動いてください。
 人（以下「本人」）は PC を持っていません。スマホだけです。説明は短く、1画面ずつ。
 

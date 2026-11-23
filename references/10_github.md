@@ -56,7 +56,7 @@ git push origin main   # A のみ。B は本人が Codex の画面で PR → mer
 本人が ZIP で持っている場合：スマホから GitHub の **Add file → Upload files** はフォルダ単位で難しいので、**配布 URL を使う方法を勧める**。
 
 ## 4.5 慣れる練習（タスク2 の仕上げ・5分）
-1. AI が `templates/app/public/index.html` の見出しを1行だけ本人の名前や店名に変えて保存（commit→push／B は PR）
+1. AI が `templates/app/src/pages.js` の `SITE.name`（お店・サービスの名前）を1行だけ本人の名前や店名に変えて保存（commit→push／B は PR）
 2. 本人が GitHub アプリでそのファイルを開き、変わっているのを見る（B は PR を Merge してから）
 3. AI が「履歴（Commits）」の見方を1画面で案内 → 本人が「いつ・何を変えたか」が見えたらタスク2 完了
 ※ これで「AI に頼む→保存される→自分のスマホで見える」の1往復が身につく。次のタスク3で、この同じ流れが公開 URL になる。
