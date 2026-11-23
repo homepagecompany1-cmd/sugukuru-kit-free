@@ -26,6 +26,7 @@
 0. 初回だけ：ブラウザで `https://claude.ai/code` を開く → 「GitHub を接続」が出る → GitHub の画面で **承認** → 戻る → **Claude GitHub App** のインストール案内 → **自分のアカウント**を選び、さっき作ったリポ（Private）を許可（Private リポはこの App が無いと開けない。公式：code.claude.com/docs/en/web-quickstart・確認日 2026-11-22）。
    環境は Pro/Max なら「Default」が自動で用意される。設定は不要。
 1. Claude アプリ → **Code** タブ → 入力欄の下の「リポジトリを選ぶ」で、そのリポを選ぶ。
+   - 一覧に出ない時：GitHub の連携で「選んだリポだけ」を許可している。github.com → Settings → Applications → Claude → **Configure** → 作ったリポを足す（または All repositories）。
 2. そのリポで新しいセッションを始め、「キットを読んで始めて」と送る（キットの入れ方は 4 へ）。
 - 終わると：セッションの中で `git remote -v` に github.com が出て、`git push` が通る。
 
